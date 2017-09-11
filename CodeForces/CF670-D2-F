@@ -1,0 +1,136 @@
+/*
+ *
+ * Created by: Amr Ayman
+ *
+ */
+#include<bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	std::cin.tie(0);
+	std::ios::sync_with_stdio(false);
+
+	string x, y;
+	cin >> x >> y;
+	if (x == "01" || x == "10")
+	{
+		cout << 0 << endl;
+		return 0;
+	}
+	int cnt[10] =
+	{ };
+	for (int i = 0; i < x.size(); i++)
+		cnt[x[i] - '0']++;
+	for (int i = 0; i < y.size(); i++)
+		cnt[y[i] - '0']--;
+	int tmpp[10] =
+	{ };
+	string ans;
+	for (int k = 1; k < x.size(); k++)
+	{
+		int a = 0;
+		int aa = k;
+		while (aa)
+		{
+			a++;
+			aa /= 10;
+		}
+		if (a + k == x.size())
+		{
+			aa = k;
+			while (aa)
+			{
+				cnt[aa % 10]--;
+				aa /= 10;
+			}
+			for (int i = 0; i < 10; i++)
+				tmpp[i] = cnt[i];
+			string arr[3], tmp;
+			for (int i = 0; i < x.size() - a; i++)
+				tmp += '9';
+			arr[0] = tmp;
+			arr[1] = tmp;
+			arr[2] = tmp;
+			if (y[0] != '0')
+			{
+				arr[0] = y;
+				for (int i = 0; i < 10; i++)
+				{
+					while (cnt[i] != 0)
+					{
+						cnt[i]--;
+						arr[0] += char(i + '0');
+					}
+				}
+				for (int i = 0; i < 10; i++)
+					cnt[i] = tmpp[i];
+			}
+			int f = 0;
+			for (int i = 1; i < 10; i++)
+			{
+				if (cnt[i] > 0)
+				{
+					cnt[i]--;
+					f = i;
+					break;
+				}
+			}
+
+			if (f != 0)
+			{
+				arr[1] = "";
+				arr[1] += char(f + '0');
+				for (int i = 0; i < y[0] - '0'; i++)
+				{
+					while (cnt[i] > 0)
+					{
+						cnt[i]--;
+						arr[1] += char(i + '0');
+					}
+				}
+				arr[1] += y;
+				for (int i = y[0] - '0'; i < 10; i++)
+				{
+					while (cnt[i] > 0)
+					{
+						cnt[i]--;
+						arr[1] += char(i + '0');
+					}
+				}
+
+				for (int i = 0; i < 10; i++)
+					cnt[i] = tmpp[i];
+				cnt[f]--;
+
+				arr[2] = "";
+				arr[2] += char(f + '0');
+				for (int i = 0; i <= y[0] - '0'; i++)
+				{
+					while (cnt[i] > 0)
+					{
+						cnt[i]--;
+						arr[2] += char(i + '0');
+					}
+				}
+				arr[2] += y;
+				for (int i = y[0] - '0'; i < 10; i++)
+				{
+					while (cnt[i] > 0)
+					{
+						cnt[i]--;
+						arr[2] += char(i + '0');
+					}
+				}
+			}
+			//cout << arr[0] << " " << arr[1] << " " << arr[2] << endl;
+			sort(arr, arr + 3);
+			ans = arr[0];
+		}
+	}
+	cout << ans << endl;
+
+	return 0;
+}
